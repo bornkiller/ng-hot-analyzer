@@ -1,0 +1,23 @@
+{
+  "name": "ng-hot-analyzer",
+  "version": "0.1.0",
+  "description": "analyze es6 module import and export for ng-hot-loader.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bornkiller/ng-hot-analyzer.git"
+  },
+  "keywords": [
+    "ng-hot-loader",
+    "es6-module"
+  ],
+  "author": "bornkiller <hjj491229492@hotmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bornkiller/ng-hot-analyzer/issues"
+  },
+  "homepage": "https://github.com/bornkiller/ng-hot-analyzer#readme"
+}
