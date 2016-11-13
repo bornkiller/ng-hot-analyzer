@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/bornkiller/ng-hot-analyzer/issues"
   },
-  "homepage": "https://github.com/bornkiller/ng-hot-analyzer#readme"
+  "homepage": "https://github.com/bornkiller/ng-hot-analyzer#readme",
+  "devDependencies": {
+    "babel-eslint": "^7.1.0",
+    "eslint": "^3.10.0"
+  }
 }
