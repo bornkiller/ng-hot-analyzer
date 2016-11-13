@@ -1,13 +1,4 @@
-/**
- * @ngdoc controller
- * @name App.controller:showcaseController
- *
- * @description - showcase manager control
- *
- * @requires App.service:prompt
- */
-  
-export class ShowcaseController {
+export default class CollectionController {
   /* @ngInject */
   constructor(bkPrompt) {
     this.bkPrompt = bkPrompt;
