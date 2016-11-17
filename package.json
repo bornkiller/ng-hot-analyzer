@@ -22,6 +22,8 @@
   "homepage": "https://github.com/bornkiller/ng-hot-analyzer#readme",
   "devDependencies": {
     "babel-eslint": "^7.1.0",
-    "eslint": "^3.10.0"
+    "eslint": "^3.10.0",
+    "mocha": "^3.1.2",
+    "should": "^11.1.1"
   }
 }
