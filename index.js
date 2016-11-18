@@ -7,4 +7,8 @@
  */
 'use strict';
 
-module.exports = require('./src/analyze');
+module.exports = {
+  analyzeInstanceReference: require('./src/analyze.ref'),
+  analyzeAccessToken: require('./src/analyze.token'),
+  linkAnalyzeStream: require('./src/analyze.link')
+};

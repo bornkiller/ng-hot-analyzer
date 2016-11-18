@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { analyzeAccessToken, analyzeInstanceReference, linkAnalyzeStream } = require('../src/analyze');
+const { analyzeAccessToken, analyzeInstanceReference, linkAnalyzeStream } = require('../');
 const shareModuleTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.module.js'), {encoding: 'utf8'});
 
 describe('ng-hot analyze implement', function () {
