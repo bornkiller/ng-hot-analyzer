@@ -5,7 +5,7 @@
 
 'use strict';
 
-const LoveTemplate = require('./template/love.html');
+const TodoTemplate = require('./template/todo.html');
 
 import { CollectionController } from './controller/collection.controller';
 
@@ -23,11 +23,11 @@ export const ShareRoute = [
     }
   },
   {
-    name: 'application.secondary',
-    url: '/secondary',
+    name: 'application.todo',
+    url: '/todo',
     views: {
       'page': {
-        template: LoveTemplate,
+        template: TodoTemplate,
         controller: CollectionController,
         controllerAs: 'vm'
       }
