@@ -14,7 +14,7 @@ const { analyzeInstanceReference, analyzeTemplateReference, analyzeAccessToken, 
 
 describe('ng-hot analyze implement', function () {
   it('analyze instance reference', function () {
-    const shareModuleTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.module.js'), {encoding: 'utf8'});
+    const shareModuleTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.module.js'), { encoding: 'utf8' });
     
     let instanceReference = analyzeInstanceReference(shareModuleTemplate);
     
@@ -34,7 +34,7 @@ describe('ng-hot analyze implement', function () {
   });
   
   it('analyze template reference', function () {
-    const shareRouteTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.route.js'), {encoding: 'utf8'});
+    const shareRouteTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.route.js'), { encoding: 'utf8' });
     
     let [todo, love] = analyzeTemplateReference(shareRouteTemplate);
     
@@ -43,5 +43,32 @@ describe('ng-hot analyze implement', function () {
     
     todo.location.should.equal('./template/todo.html');
     love.location.should.equal('./template/love.html');
+  });
+  
+  it('analyze access token', function () {
+    const shareModuleTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.module.js'), { encoding: 'utf8' });
+    
+    let componentAccessToken = analyzeAccessToken(shareModuleTemplate);
+    let bkPromptFactory = componentAccessToken.find((descriptor) => descriptor.name === 'promptFactory');
+    
+    bkPromptFactory.should.be.an.Object();
+    bkPromptFactory.category.should.equal('factory');
+    bkPromptFactory.token.should.equal('bkPrompt');
+  });
+  
+  it('analyze stream link', function () {
+    let componentAccessToken = [{ token: 'bkPrompt', name: 'promptFactory', category: 'factory' }];
+    let componentInstanceReference = [{
+      location: './service/prompt.factory',
+      name: 'promptFactory',
+      type: 'destruct'
+    }];
+    
+    let [match] = linkAnalyzeStream(componentInstanceReference, componentAccessToken);
+    
+    match.should.be.an.Object();
+    match.location.should.equal('./service/prompt.factory');
+    match.type.should.equal('destruct');
+    match.token.should.equal('bkPrompt');
   });
 });
