@@ -11,5 +11,6 @@
 
 module.exports = Object.assign({}, require('./src/analyze.ref'), {
   analyzeAccessToken: require('./src/analyze.token'),
+  analyzeExportDeclare: require('./src/analyze.export'),
   linkAnalyzeStream: require('./src/analyze.link')
 });
