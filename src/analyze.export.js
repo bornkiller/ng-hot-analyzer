@@ -4,7 +4,8 @@
  */
 'use strict';
 
-const exportDeclareCaptureReg = /export\s+(?:default\s+)?class\s+(\w+)/gm;
+const exportControllerCaptureReg = /export\s+(?:default\s+)?class\s+(\w+)/m;
+const exportFunctionCaptureReg = /export\s+(?:default\s+)?function\s*(\w+)/m;
 
 module.exports = analyzeExportDeclare;
 
@@ -16,7 +17,7 @@ module.exports = analyzeExportDeclare;
  * @return {string}
  */
 function analyzeExportDeclare(template) {
-  let middleware = exportDeclareCaptureReg.exec(template);
+  let middleware = exportControllerCaptureReg.exec(template) || exportFunctionCaptureReg.exec(template);
   
   return middleware ? middleware[1] : '';
 }

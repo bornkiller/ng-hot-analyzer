@@ -76,10 +76,10 @@ describe('ng-hot analyze implement', function () {
     match.token.should.equal('bkPrompt');
   });
   
-  it('analyze export declare', function () {
+  it('analyze export controller declare', function () {
     const collectionControllerTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'controller', 'collection.controller.js'), {encoding: 'utf8'});
     const showcaseControllerTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'controller', 'showcase.controller.js'), {encoding: 'utf8'});
-    
+  
     let declare;
     
     declare = analyzeExportDeclare(collectionControllerTemplate);
@@ -87,5 +87,31 @@ describe('ng-hot analyze implement', function () {
   
     declare = analyzeExportDeclare(showcaseControllerTemplate);
     declare.should.equal('ShowcaseController');
+  });
+  
+  it('analyze export function declare', function () {
+    const promptFactoryTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'service', 'prompt.factory.js'), {encoding: 'utf8'});
+    const analyzerFactoryTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'service', 'analyzer.factory.js'), {encoding: 'utf8'});
+    const postfixFilterTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'filter', 'postfix.filter.js'), {encoding: 'utf8'});
+    
+    let declare;
+    
+    declare = analyzeExportDeclare(promptFactoryTemplate);
+    declare.should.equal('promptFactory');
+    
+    declare = analyzeExportDeclare(analyzerFactoryTemplate);
+    declare.should.equal('analyzerFactory');
+  
+    declare = analyzeExportDeclare(postfixFilterTemplate);
+    declare.should.equal('postfixFilter');
+  });
+  
+  it('analyze export nothing declare', function () {
+    const shareModuleTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.module.js'), { encoding: 'utf8' });
+    
+    let declare;
+    
+    declare = analyzeExportDeclare(shareModuleTemplate);
+    declare.should.equal('');
   });
 });
