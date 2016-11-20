@@ -1,2 +1,2 @@
-export default /* @ngInject */ function analyzerFactory() {
+export default  function analyzerFactory() {
 }

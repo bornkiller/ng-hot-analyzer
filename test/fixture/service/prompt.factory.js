@@ -8,7 +8,7 @@
  *
  * @requires $q
  */
-export /* @ngInject */ function promptFactory() {
+export function promptFactory() {
   return {
     isValidPrompt,
     escapeValidPrompt
