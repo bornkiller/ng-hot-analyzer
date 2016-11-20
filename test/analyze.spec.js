@@ -8,9 +8,13 @@ const fs = require('fs');
 const path = require('path');
 const should = require('should');
 
-const { analyzeInstanceReference, analyzeTemplateReference, analyzeAccessToken, linkAnalyzeStream } = require('../');
-// const shareModuleTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.module.js'), {encoding: 'utf8'});
-// const shareRouteTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.route.js'), {encoding: 'utf8'});
+const {
+  analyzeInstanceReference,
+  analyzeTemplateReference,
+  analyzeExportDeclare,
+  analyzeAccessToken,
+  linkAnalyzeStream
+} = require('../');
 
 describe('ng-hot analyze implement', function () {
   it('analyze instance reference', function () {
@@ -70,5 +74,18 @@ describe('ng-hot analyze implement', function () {
     match.location.should.equal('./service/prompt.factory');
     match.type.should.equal('destruct');
     match.token.should.equal('bkPrompt');
+  });
+  
+  it('analyze export declare', function () {
+    const collectionControllerTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'controller', 'collection.controller.js'), {encoding: 'utf8'});
+    const showcaseControllerTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'controller', 'showcase.controller.js'), {encoding: 'utf8'});
+    
+    let declare;
+    
+    declare = analyzeExportDeclare(collectionControllerTemplate);
+    declare.should.equal('CollectionController');
+  
+    declare = analyzeExportDeclare(showcaseControllerTemplate);
+    declare.should.equal('ShowcaseController');
   });
 });
