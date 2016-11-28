@@ -5,6 +5,7 @@
 'use strict';
 
 import { promptFactory } from './service/prompt.factory';
+import { FighterService } from './service/fighter.service';
 import { postfixFilter } from './filter/postfix.filter';
 import { ShowcaseController } from './controller/showcase.controller';
 import { validateCaptchaDirective } from './directive/validate.directive';
@@ -16,11 +17,12 @@ import CollectionController from './controller/collection.controller';
 const SHARE_MODULE = 'app.share';
 
 /**
- * @description - never declare any deps here, because deps should declare into root module
+ * @description - never declare any dependency here, because dependency should declare into root module
  */
 angular.module(SHARE_MODULE, [])
   .factory('bkPrompt', promptFactory)
   .factory('bkAnalyzer', analyzerFactory)
+  .service('bkFighter', FighterService)
   .filter('bkPostfix', postfixFilter)
   .controller('ShowcaseController', ShowcaseController)
   .controller('CollectionController', CollectionController)
