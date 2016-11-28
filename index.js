@@ -9,8 +9,8 @@
 
 // analyzeInstanceReference: require('./src/analyze.ref')
 
-module.exports = Object.assign({}, require('./src/analyze.ref'), {
-  analyzeAccessToken: require('./src/analyze.token'),
-  analyzeExportDeclare: require('./src/analyze.export'),
-  linkAnalyzeStream: require('./src/analyze.link')
+module.exports = Object.assign({}, require('./src/ref.js'), {
+  analyzeAccessToken: require('./src/token.js'),
+  analyzeExportDeclare: require('./src/export.js'),
+  linkAnalyzeStream: require('./src/link.js')
 });
