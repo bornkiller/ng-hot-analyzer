@@ -10,7 +10,7 @@ const should = require('should');
 
 const { analyzeInstanceReference, analyzeTemplateReference } = require('../src/ref');
 
-describe.only('ng-hot-analyze reference', function () {
+describe('ng-hot-analyze reference', function () {
   it('analyze instance reference', function () {
     const shareModuleTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.module.js'), { encoding: 'utf8' });
     const [prompt, fighter, postfix, showcase, validate, analyzer, collection] = analyzeInstanceReference(shareModuleTemplate);
