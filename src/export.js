@@ -6,7 +6,9 @@
 
 const exportCaptureReg = /export\s+(?:default\s+)?(?:class|function)\s+(\w+)/m;
 
-module.exports = analyzeExportInstance;
+module.exports = {
+  analyzeExportInstance
+};
 
 /**
  * @description - analyze export declare about controller, filter, factory, directive class or function

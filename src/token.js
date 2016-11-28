@@ -13,7 +13,9 @@ const standardComponentCapture = [
 ];
 
 /* eslint-disable no-cond-assign */
-module.exports = analyzeAccessToken;
+module.exports = {
+  analyzeAccessToken
+};
 
 /**
  * @description - 分析模块声明中组件注册

@@ -7,10 +7,9 @@
  */
 'use strict';
 
-// analyzeInstanceReference: require('./src/analyze.ref')
-
-module.exports = Object.assign({}, require('./src/ref.js'), {
-  analyzeAccessToken: require('./src/token.js'),
-  analyzeExportDeclare: require('./src/export.js'),
-  linkAnalyzeStream: require('./src/link.js')
-});
+module.exports = Object.assign({},
+  require('./src/ref.js'),
+  require('./src/token.js'),
+  require('./src/link.js'),
+  require('./src/export.js')
+);
