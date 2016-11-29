@@ -5,10 +5,13 @@
 'use strict';
 
 const { has } = require('lodash');
+const compose = require('compose-function');
 
 module.exports = {
   linkAnalyzeStream,
-  cleanAnalyzeStream
+  cleanAnalyzeStream,
+  // above export low level API just for mocha test, use below higher API
+  resolveAnalyzeStream: compose(cleanAnalyzeStream, linkAnalyzeStream)
 };
 
 /**
