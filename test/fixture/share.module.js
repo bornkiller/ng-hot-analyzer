@@ -13,7 +13,8 @@ import { validateCaptchaDirective } from './directive/validate.directive';
 // share module route dependency
 import lovePageTemplate from './template/love.html';
 import todoPageTemplate from './template/todo.html';
-import CollectionController from './controller/collection.controller';
+import { LoveController } from './controller/love.controller';
+import { TodoController } from './controller/todo.controller';
 
 // share module name
 const SHARE_MODULE = 'app.share';
@@ -26,7 +27,7 @@ const ShareRoute = [
     views: {
       'page': {
         template: lovePageTemplate,
-        controller: CollectionController,
+        controller: LoveController,
         controllerAs: 'vm'
       }
     }
@@ -37,7 +38,7 @@ const ShareRoute = [
     views: {
       'page': {
         template: todoPageTemplate,
-        controller: CollectionController,
+        controller: TodoController,
         controllerAs: 'vm'
       }
     }
