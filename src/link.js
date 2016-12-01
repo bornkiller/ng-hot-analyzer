@@ -17,7 +17,7 @@ module.exports = {
 /**
  * @description - link instance ref and token for ng-hot-loader
  *
- * @param {Array.<ExternalDescriptor>} componentInstanceRef
+ * @param {Array.<InstanceDescriptor>} componentInstanceRef
  * @param {Array.<NgDescriptor>} componentAccessToken
  *
  * @return {Array.<NgHotDescriptor>}

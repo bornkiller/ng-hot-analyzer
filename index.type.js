@@ -3,7 +3,7 @@
  */
 
 /**
- * @typedef {object} ExternalDescriptor
+ * @typedef {object} InstanceDescriptor
  *
  * @property {string} location - import file source path
  * @property {string} name - import keyword variable

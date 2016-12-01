@@ -24,7 +24,7 @@ module.exports = {
  *
  * @param {string} template
  *
- * @returns {Array.<ExternalDescriptor>}
+ * @returns {Array.<InstanceDescriptor>}
  *
  * @example
  * import { postfixFilter } from './filter/postfix.filter';
