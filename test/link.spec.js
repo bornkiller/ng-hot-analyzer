@@ -12,35 +12,30 @@ const { linkAnalyzeStream, cleanAnalyzeStream } = require('../src/link');
 
 describe('ng-hot-analyze link', function () {
   it('should link analyze stream', function () {
-    let componentAccessToken = [{ token: 'bkPrompt', name: 'promptFactory', category: 'factory' }];
-    let componentInstanceReference = [
+    let instanceReferenceList = [
       { location: './service/prompt.factory', name: 'promptFactory', type: 'destruct' },
-      { location: './filter/postfix.filter', name: 'postfixFilter', type: 'destruct' }
+      { location: './template/todo.html', name: 'todoPageTemplate', type: 'default' }
     ];
 
-    let [prompt, postfix] = linkAnalyzeStream(componentInstanceReference, componentAccessToken);
+    let accessTokenList = [
+      { token: 'bkPrompt', name: 'promptFactory', category: 'factory' },
+      { token: 'RouteMark', name: 'todoPageTemplate', category: 'RouteTemplate' }
+    ];
 
-    prompt.should.eql({
-      name: 'promptFactory',
-      token: 'bkPrompt',
-      category: 'factory',
-      location: './service/prompt.factory',
-      type: 'destruct'
-    });
+    let [prompt, todo] = linkAnalyzeStream(instanceReferenceList, accessTokenList);
 
-    // ignore none-match reference
-    postfix.should.eql(componentInstanceReference[1]);
+    prompt.should.eql(Object.assign({}, instanceReferenceList[0], { token: 'bkPrompt', category: 'factory' }));
+    todo.should.eql(Object.assign({}, instanceReferenceList[1], { token: 'RouteMark', category: 'RouteTemplate' }));
   });
 
-  it('should clean unnecessary stream', function () {
-    let componentAccessToken = [{ token: 'bkPrompt', name: 'promptFactory', category: 'factory' }];
-    let componentInstanceReference = [
+  it('should clean unnecessary reference', function () {
+    let list = [
+      { token: 'bkPrompt', name: 'promptFactory', category: 'factory' },
       { location: './service/prompt.factory', name: 'promptFactory', type: 'destruct' },
-      { location: './filter/postfix.filter', name: 'postfixFilter', type: 'destruct' }
+      { location: './filter/postfix.filter', name: 'postfixFilter', type: 'destruct' },
+      { token: 'bkPrompt', location: './filter/postfix.filter', name: 'promptFactory' }
     ];
 
-    let pristine = cleanAnalyzeStream(linkAnalyzeStream(componentInstanceReference, componentAccessToken));
-
-    pristine.length.should.equal(1);
+    cleanAnalyzeStream(list).should.eql([list[3]]);
   });
 });

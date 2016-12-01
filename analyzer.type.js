@@ -11,13 +11,6 @@
  */
 
 /**
- * @typedef {object} TemplateDescriptor
- *
- * @property {string} location - import file source path
- * @property {string} category - only support template
- */
-
-/**
  * @typedef {object} NgDescriptor
  *
  * @property {string} token - ng register name
