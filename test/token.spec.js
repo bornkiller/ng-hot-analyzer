@@ -10,16 +10,23 @@ const should = require('should');
 const { analyzeAccessToken } = require('../src/token');
 
 describe('ng-hot-analyze token', function () {
-  it('analyze access token', function () {
-    const shareModuleTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.module.js'), { encoding: 'utf8' });
-    const [prompt, analyzer, fighter, postfix, showcase, collection, validate] = analyzeAccessToken(shareModuleTemplate);
+  it('should analyze empty reference', function () {
+    const shareRouteTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'service', 'analyzer.factory.js'), { encoding: 'utf8' });
 
-    prompt.should.eql({ category: 'factory', token: 'bkPrompt', name: 'promptFactory' });
-    analyzer.should.eql({ category: 'factory', token: 'bkAnalyzer', name: 'analyzerFactory' });
-    fighter.should.eql({ category: 'service', token: 'bkFighter', name: 'FighterService' });
-    postfix.should.eql({ category: 'filter', token: 'bkPostfix', name: 'postfixFilter' });
-    showcase.should.eql({ category: 'controller', token: 'ShowcaseController', name: 'ShowcaseController' });
-    collection.should.eql({ category: 'controller', token: 'CollectionController', name: 'CollectionController' });
-    validate.should.eql({ category: 'directive', token: 'bkValidateCaptcha', name: 'validateCaptchaDirective' });
+    analyzeAccessToken(shareRouteTemplate).should.eql([]);
+  });
+
+  it('should analyze access token', function () {
+    const shareModuleTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'share.module.js'), { encoding: 'utf8' });
+    const [postfix, prompt, fighter, validate, loveTemplate, todoTemplate, LoveController, TodoController] = analyzeAccessToken(shareModuleTemplate);
+
+    postfix.should.eql({ category: 'Filter', token: 'bkPostfix', name: 'postfixFilter' });
+    prompt.should.eql({ category: 'Factory', token: 'bkPrompt', name: 'promptFactory' });
+    fighter.should.eql({ category: 'Service', token: 'bkFighter', name: 'FighterService' });
+    validate.should.eql({ category: 'Directive', token: 'bkValidateCaptcha', name: 'validateCaptchaDirective' });
+    loveTemplate.should.eql({ category: 'RouteTemplate', token: 'RouteMark', name: 'lovePageTemplate' });
+    todoTemplate.should.eql({ category: 'RouteTemplate', token: 'RouteMark', name: 'todoPageTemplate' });
+    LoveController.should.eql({ category: 'RouteController', token: 'RouteMark', name: 'LoveController' });
+    TodoController.should.eql({ category: 'RouteController', token: 'RouteMark', name: 'TodoController' });
   });
 });

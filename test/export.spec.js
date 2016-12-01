@@ -11,11 +11,11 @@ const { analyzeExportInstance } = require('../src/export');
 
 describe('ng-hot-analyze export', function () {
   it('analyze export controller declare', function () {
-    const collectionControllerTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'controller', 'collection.controller.js'), { encoding: 'utf8' });
-    const showcaseControllerTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'controller', 'showcase.controller.js'), { encoding: 'utf8' });
+    const loveControllerTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'controller', 'love.controller.js'), { encoding: 'utf8' });
+    const todoControllerTemplate = fs.readFileSync(path.resolve(__dirname, 'fixture', 'controller', 'todo.controller.js'), { encoding: 'utf8' });
 
-    analyzeExportInstance(collectionControllerTemplate).should.equal('CollectionController');
-    analyzeExportInstance(showcaseControllerTemplate).should.equal('ShowcaseController');
+    analyzeExportInstance(loveControllerTemplate).should.equal('LoveController');
+    analyzeExportInstance(todoControllerTemplate).should.equal('TodoController');
   });
 
   it('analyze export function declare', function () {
