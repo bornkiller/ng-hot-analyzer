@@ -3,119 +3,64 @@
 [![Coverage Status](https://coveralls.io/repos/github/bornkiller/ng-hot-analyzer/badge.svg?branch=master)](https://coveralls.io/github/bornkiller/ng-hot-analyzer?branch=master)
 ![Package Dependency](https://david-dm.org/bornkiller/ng-hot-analyzer.svg?style=flat)
 ![Package DevDependency](https://david-dm.org/bornkiller/ng-hot-analyzer/dev-status.svg?style=flat)
-analyze es6 module import and export, template reference for ng-hot-loader.
 
-## Usage
-`share.module.js` template:
+Analyze es6 module import and export, template reference for ng-hot-loader.
+
+## API
++ `analyzeExportInstance` - capture export instance name
+
+```javascript
+// love.controller.js
+export default class LoveController {
+  /* @ngInject */
+  constructor(bkPrompt) {
+    this.bkPrompt = bkPrompt;
+  }
+
+  handleAbnormalSituation(structure) {
+  }
+}
+```
+
+```javascript
+analyzeExportInstance(LoveControllerTemplate);
+// @return LoveController
+```
+
++ `analyzeInstanceReference` - analyze ES6 import in source code
 
 ```js
+// share.module.js
 /**
  * @description - share module combine several controller, filter, service, directive
  * @author - bornkiller <hjj491229492@hotmail.com>
  */
 'use strict';
 
-import { promptFactory } from './service/prompt.factory';
+// share module dependency
 import { postfixFilter } from './filter/postfix.filter';
-import { ShowcaseController } from './controller/showcase.controller';
+import { promptFactory } from './service/prompt.factory';
+import { FighterService } from './service/fighter.service';
 import { validateCaptchaDirective } from './directive/validate.directive';
 
-import analyzerFactory from './service/analyzer.factory';
-import CollectionController from './controller/collection.controller';
+// share module route dependency
+import lovePageTemplate from './template/love.html';
+import todoPageTemplate from './template/todo.html';
+import { LoveController } from './controller/love.controller';
+import { TodoController } from './controller/todo.controller';
 
 // share module name
 const SHARE_MODULE = 'app.share';
 
-/**
- * @description - never declare any deps here, because deps should declare into root module
- */
-angular.module(SHARE_MODULE, [])
-  .factory('bkPrompt', promptFactory)
-  .factory('bkAnalyzer', analyzerFactory)
-  .filter('bkPostfix', postfixFilter)
-  .controller('ShowcaseController', ShowcaseController)
-  .controller('CollectionController', CollectionController)
-  .directive('bkValidateCaptcha', validateCaptchaDirective);
-
-// just export module name for root module
-export { SHARE_MODULE };
-```
-
-```js
-let instanceReference = analyzeInstanceReference(shareModuleTemplate);
-
-// @return
-[
-  { 
-    location: './service/prompt.factory',
-    name: 'promptFactory',
-    type: 'destruct' 
-  },
-  { 
-    location: './filter/postfix.filter',
-    name: 'postfixFilter',
-    type: 'destruct'
-  },
-  { 
-    location: './controller/showcase.controller',
-    name: 'ShowcaseController',
-    type: 'destruct'
-  },
-  { 
-    location: './directive/validate.directive',
-    name: 'validateCaptchaDirective',
-    type: 'destruct'
-  },
-  { 
-    location: './service/analyzer.factory',
-    name: 'analyzerFactory',
-    type: 'default'
-  },
-  { 
-    location: './controller/collection.controller',
-    name: 'CollectionController',
-    type: 'default'
-  } 
-]
-```
-
-```js
-let componentAccessToken = analyzeAccessToken(shareModuleTemplate);
-
-// @return
-[ 
-  { token: 'bkPrompt', name: 'promptFactory', category: 'factory' },
-  { token: 'bkAnalyzer', name: 'analyzerFactory', category: 'factory' },
-  { token: 'bkPostfix', name: 'postfixFilter', category: 'filter' },
-  { token: 'ShowcaseController', name: 'ShowcaseController', category: 'controller' },
-  { token: 'CollectionController', name: 'CollectionController', category: 'controller' },
-  { token: 'bkValidateCaptcha', name: 'validateCaptchaDirective', category: 'directive' }
-]
-```
-
-`share.route.js` template:
-
-```js
-/**
- * @description - collection sub-module level router config.
- * @author - bornkiller <hjj491229492@hotmail.com>
- */
-
-'use strict';
-
-const TodoTemplate = require('./template/todo.html');
-
-import { CollectionController } from './controller/collection.controller';
-
-// router rule declare
-export const ShareRoute = [
+// share module route
+const ShareRoute = [
   {
     name: 'application.love',
     url: '/love',
     views: {
       'page': {
-        template: require('./template/love.html'),
-        controller: CollectionController,
+        template: lovePageTemplate,
+        controller: LoveController,
         controllerAs: 'vm'
       }
     }
@@ -125,57 +70,130 @@ export const ShareRoute = [
     url: '/todo',
     views: {
       'page': {
-        template: TodoTemplate,
-        controller: CollectionController,
+        template: todoPageTemplate,
+        controller: TodoController,
         controllerAs: 'vm'
       }
     }
   }
 ];
+
+/**
+ * @description - never declare any dependency here, because dependency should declare into root module
+ */
+angular.module(SHARE_MODULE, [])
+  .filter('bkPostfix', postfixFilter)
+  .factory('bkPrompt', promptFactory)
+  .service('bkFighter', FighterService)
+  .directive('bkValidateCaptcha', validateCaptchaDirective)
+  // eslint-disable-next-line angular/di
+  .config(['$stateProvider', function ($stateProvider) {
+    ShareRoute.forEach((route) => {
+      $stateProvider.state(route);
+    });
+  }]);
+
+// just export module name for root module
+export { SHARE_MODULE };
 ```
 
 ```js
-let templateReference = analyzeTemplateReference(shareRouteTemplate);
+analyzeInstanceReference(shareModuleTemplate);
 
 // @return
-[ 
-  { location: './template/todo.html', type: 'template' },
-  { location: './template/love.html', type: 'template' }
+[
+  { type: 'destruct', name: 'postfixFilter', location: './filter/postfix.filter' },
+  { type: 'destruct', name: 'promptFactory', location: './service/prompt.factory' },
+  { type: 'destruct', name: 'FighterService', location: './service/fighter.service' },
+  { type: 'destruct', name: 'validateCaptchaDirective', location: './directive/validate.directive' },
+  { type: 'destruct', name: 'LoveController', location: './controller/love.controller' },
+  { type: 'destruct', name: 'TodoController', location: './controller/todo.controller' },
+  { type: 'default', name: 'lovePageTemplate', location: './template/love.html' },
+  { type: 'default', name: 'todoPageTemplate', location: './template/todo.html' }
 ]
 ```
 
-`collection.controller.js` template
++ `analyzeAccessToken` - analyze ng-component register token and template usage
 
 ```javascript
-export default class CollectionController {
-  /* @ngInject */
-  constructor(bkPrompt) {
-    this.bkPrompt = bkPrompt;
-  }
-  
-  /**
-   * @ngdoc function
-   * @name App.controller:showcaseController#handleAbnormalSituation
-   * @methodOf App.controller:showcaseController
-   *
-   * @description - handle network fetch fail prompt
-   *
-   * @param {object} structure - Error definition
-   */
-  handleAbnormalSituation(structure) {
-    if (this.bkPrompt.isValidPrompt(structure)) {
-      this.errorDesc = structure.errorDesc;
-    } else {
-      this.errorDesc = 'Network Fetch Failed......';
-    }
-  }
-}
+analyzeAccessToken(shareModuleTemplate);
+// @return
+[
+  { category: 'Filter', token: 'bkPostfix', name: 'postfixFilter' },
+  { category: 'Factory', token: 'bkPrompt', name: 'promptFactory' },
+  { category: 'Service', token: 'bkFighter', name: 'FighterService' },
+  { category: 'Directive', token: 'bkValidateCaptcha', name: 'validateCaptchaDirective' },
+  { category: 'Template', token: 'ShortcutMark', name: 'lovePageTemplate' },
+  { category: 'Template', token: 'ShortcutMark', name: 'todoPageTemplate' },
+  { category: 'ExplicitController', token: 'ShortcutMark', name: 'LoveController' },
+  { category: 'ExplicitController', token: 'ShortcutMark', name: 'TodoController' }
+]
 ```
 
-```javascript
-let exportDeclareName = analyzeExportDeclare(collectionControllerTemplate);
++ `resolveAnalyzeStream` - compose ES6 import and instance usage together
 
-// @return CollectionController
+```javascript
+resolveAnalyzeStream(analyzeInstanceReference(shareModuleTemplate), analyzeAccessToken(shareModuleTemplate));
+
+// @return
+[
+  {
+    type: 'destruct',
+    name: 'postfixFilter',
+    location: './filter/postfix.filter',
+    category: 'Filter',
+    token: 'bkPostfix'
+  },
+  {
+    type: 'destruct',
+    name: 'promptFactory',
+    location: './service/prompt.factory',
+    category: 'Factory',
+    token: 'bkPrompt'
+  },
+  {
+    type: 'destruct',
+    name: 'FighterService',
+    location: './service/fighter.service',
+    category: 'Service',
+    token: 'bkFighter'
+  },
+  {
+    type: 'destruct',
+    name: 'validateCaptchaDirective',
+    location: './directive/validate.directive',
+    category: 'Directive',
+    token: 'bkValidateCaptcha'
+  },
+  {
+    type: 'destruct',
+    name: 'LoveController',
+    location: './controller/love.controller',
+    category: 'ExplicitController',
+    token: 'ShortcutMark'
+  },
+  {
+    type: 'destruct',
+    name: 'TodoController',
+    location: './controller/todo.controller',
+    category: 'ExplicitController',
+    token: 'ShortcutMark'
+  },
+  {
+    type: 'default',
+    name: 'lovePageTemplate',
+    location: './template/love.html',
+    category: 'Template',
+    token: 'ShortcutMark'
+  },
+  {
+    type: 'default',
+    name: 'todoPageTemplate',
+    location: './template/todo.html',
+    category: 'Template',
+    token: 'ShortcutMark'
+  }
+]
 ```
 
 ## License
