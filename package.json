@@ -1,6 +1,6 @@
 {
   "name": "ng-hot-analyzer",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "description": "analyze es6 module import and export for ng-hot-loader.",
   "main": "index.js",
   "scripts": {
