@@ -2,6 +2,9 @@
  * @description - analyze angular component access token
  * @author - bornkiller <hjj491229492@hotmail.com>
  */
+'use strict';
+
+const strip = require('strip-comment');
 
 /**
  * @description
@@ -14,9 +17,9 @@ const captureRegList = [
   {category: 'Factory', reg: /\.factory\((['"])([\w]+)\1\,\s*([\w]+)\)/gm},
   {category: 'Service', reg: /\.service\((['"])([a-zA-Z]+)\1\,\s*([a-zA-Z]+)\)/gm},
   {category: 'Directive', reg: /\.directive\((['"])([\w]+)\1\,\s*([\w]+)\)/gm},
-  {category: 'RouteTemplate', reg: /template:\s*(\w+)/gm},
-  {category: 'RouteController', reg: /controller:\s*(\w+)/gm}
-  // {category: 'controller', reg: /\.controller\((['"])([a-zA-Z]+)\1\,\s*([a-zA-Z]+)\)/gm}
+  {category: 'ImplicitController', reg: /\.controller\((['"])([\w]+)\1\,\s*([\w]+)\)/gm},
+  {category: 'Template', reg: /template:\s*(\w+)/gm},
+  {category: 'ExplicitController', reg: /controller:\s*(\w+)/gm}
 ];
 
 /* eslint-disable no-cond-assign */
@@ -27,26 +30,29 @@ module.exports = {
 /**
  * @description - 分析模块声明中组件注册
  *
- * @param {string} template
+ * @param {string} input - javascript source  code
  *
  * @returns {Array.<NgDescriptor>}
  *
  * @example
  * import { postfixFilter } from './filter/postfix.filter';
  */
-function analyzeAccessToken(template) {
+function analyzeAccessToken(input) {
   let middleware;
   let architecture = [];
+  let template = strip.js(input);
 
   captureRegList.forEach(({category, reg}) => {
-    let isRouteMode = category === 'RouteTemplate' || category === 'RouteController';
+    let isExplicitMode = category === 'Template' || category === 'ExplicitController';
 
     // destruct import ways
     while (middleware = reg.exec(template)) {
       architecture.push({
         category: category,
-        token: isRouteMode ? 'RouteMark' : middleware[2],
-        name: isRouteMode ? middleware[1] : middleware[3]
+        // why add manual token here ?
+        // make ng-hot-loader generate HMR code more convenient, ng-hmr implement HMR more convenient
+        token: isExplicitMode ? 'ShortcutMark' : middleware[2],
+        name: isExplicitMode ? middleware[1] : middleware[3]
       });
     }
   });

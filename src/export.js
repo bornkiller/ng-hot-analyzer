@@ -4,6 +4,8 @@
  */
 'use strict';
 
+const strip = require('strip-comment');
+
 const exportCaptureReg = /export\s+(?:default\s+)?(?:class|function)\s+(\w+)/m;
 
 module.exports = {
@@ -13,12 +15,14 @@ module.exports = {
 /**
  * @description - analyze export declare about controller, filter, factory, directive class or function
  *
- * @param {string} template
+ * @param {string} input - javascript source  code
  *
  * @return {string|boolean}
  */
-function analyzeExportInstance(template) {
+function analyzeExportInstance(input) {
+  // avoid comment disturb RegExp capture
+  let template = strip.js(input);
   let middleware = exportCaptureReg.exec(template);
-
+  
   return middleware ? middleware[1] : false;
 }

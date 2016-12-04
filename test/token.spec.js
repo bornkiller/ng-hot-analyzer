@@ -24,9 +24,9 @@ describe('ng-hot-analyze token', function () {
     prompt.should.eql({ category: 'Factory', token: 'bkPrompt', name: 'promptFactory' });
     fighter.should.eql({ category: 'Service', token: 'bkFighter', name: 'FighterService' });
     validate.should.eql({ category: 'Directive', token: 'bkValidateCaptcha', name: 'validateCaptchaDirective' });
-    loveTemplate.should.eql({ category: 'RouteTemplate', token: 'RouteMark', name: 'lovePageTemplate' });
-    todoTemplate.should.eql({ category: 'RouteTemplate', token: 'RouteMark', name: 'todoPageTemplate' });
-    LoveController.should.eql({ category: 'RouteController', token: 'RouteMark', name: 'LoveController' });
-    TodoController.should.eql({ category: 'RouteController', token: 'RouteMark', name: 'TodoController' });
+    loveTemplate.should.eql({ category: 'Template', token: 'ShortcutMark', name: 'lovePageTemplate' });
+    todoTemplate.should.eql({ category: 'Template', token: 'ShortcutMark', name: 'todoPageTemplate' });
+    LoveController.should.eql({ category: 'ExplicitController', token: 'ShortcutMark', name: 'LoveController' });
+    TodoController.should.eql({ category: 'ExplicitController', token: 'ShortcutMark', name: 'TodoController' });
   });
 });

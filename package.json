@@ -29,6 +29,7 @@
     "should": "^11.1.1"
   },
   "dependencies": {
-    "compose-function": "^3.0.3"
+    "compose-function": "^3.0.3",
+    "strip-comment": "^1.1.3"
   }
 }
